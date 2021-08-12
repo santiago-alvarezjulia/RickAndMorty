@@ -7,7 +7,7 @@ import javax.inject.Inject
 open class ShowCharactersRepository @Inject constructor(
     private val rickAndMortyWebService: RickAndMortyWebService
 ) : ShowCharactersRepositoryInt {
-    override fun fetchShowCharacters(): List<ShowCharacter> {
+    override suspend fun fetchShowCharacters(): List<ShowCharacter> {
         return rickAndMortyWebService.getShowCharacters()
     }
 }

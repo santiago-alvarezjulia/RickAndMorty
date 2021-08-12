@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface RickAndMortyWebService {
     @GET("character")
-    fun getShowCharacters(): List<ShowCharacter>
+    suspend fun getShowCharacters(): List<ShowCharacter>
 }
