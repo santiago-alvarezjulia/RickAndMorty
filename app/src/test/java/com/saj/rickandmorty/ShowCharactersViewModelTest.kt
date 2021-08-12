@@ -8,28 +8,28 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
 
-class ViewModelTest {
+class ShowCharactersViewModelTest {
 
     private val showCharactersRepo = mockk<ShowCharactersRepository>()
 
     @Test
-    fun `fetch characters returns empty list when no characters available`() {
-        stubShowCharactersFetch(emptyList())
+    fun `get show characters returns empty list when no characters`() {
+        stubFetchShowCharacters(emptyList())
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo)
         val characters = charactersListViewModel.getShowCharacters()
         assertThat(characters.isEmpty()).isTrue()
     }
 
     @Test
-    fun `fetch characters returns list of characters`() {
+    fun `get show characters returns list of characters`() {
         val showCharacter = ShowCharacter()
-        stubShowCharactersFetch(listOf(showCharacter))
+        stubFetchShowCharacters(listOf(showCharacter))
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo)
         val characters = charactersListViewModel.getShowCharacters()
         assertThat(characters.isEmpty()).isFalse()
     }
 
-    private fun stubShowCharactersFetch(characters: List<ShowCharacter>) {
+    private fun stubFetchShowCharacters(characters: List<ShowCharacter>) {
         every { showCharactersRepo.fetchShowCharacters()} returns characters
     }
 }
