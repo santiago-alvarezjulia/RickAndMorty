@@ -2,11 +2,11 @@ package com.saj.rickandmorty
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import com.saj.rickandmorty.builders.ShowCharacterBuilder
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
 import com.saj.rickandmorty.testUtils.MainCoroutineRule
-import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
 import com.saj.rickandmorty.testUtils.runBlockingTest
 import com.saj.rickandmorty.viewmodels.ShowCharactersMasterViewModel
 import io.mockk.coEvery

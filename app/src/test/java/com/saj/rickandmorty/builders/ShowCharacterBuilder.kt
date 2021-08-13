@@ -1,4 +1,4 @@
-package com.saj.rickandmorty.testUtils
+package com.saj.rickandmorty.builders
 
 import com.saj.rickandmorty.models.ShowCharacter
 
@@ -8,7 +8,7 @@ class ShowCharacterBuilder {
     private var name = "Rick Sanchez"
     private var status = "Alive"
     private var imageUrl = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-    private var episodesCount = 20
+    private var episodesCount = 2
 
     fun setId(newId: Int) : ShowCharacterBuilder {
         this.id = newId

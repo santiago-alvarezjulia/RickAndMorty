@@ -1,9 +1,9 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth.assertThat
+import com.saj.rickandmorty.builders.ShowCharacterDTOBuilder
 import com.saj.rickandmorty.network.RickAndMortyWebService
 import com.saj.rickandmorty.network.dtos.InfoDTO
-import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.testUtils.UnitTestsUtils.getMockResponse
 import com.saj.rickandmorty.testUtils.UnitTestsUtils.readJsonResponseAsString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,16 +45,16 @@ class WebServiceIntegrationTest {
         mockWebServer.enqueue(getMockResponse(readJsonResponseAsString("1-character-200.json"),
             200))
 
+        val showCharacterDTO = ShowCharacterDTOBuilder()
+            .setId(1)
+            .setName("Rick Sanchez")
+            .setStatus("Dead")
+            .setImageUrl("image_url")
+            .setEpisodes(listOf("1", "2"))
+            .build()
+
         val actual = webService.getShowCharacters(null).showCharacters
-        val expected = listOf(
-            ShowCharacterDTO(
-                id = 1,
-                name = "Rick Sanchez",
-                status = "Dead",
-                imageUrl = "image_url",
-                episodes = listOf("1", "2")
-            )
-        )
+        val expected = listOf(showCharacterDTO)
         assertThat(expected).isEqualTo(actual)
     }
 

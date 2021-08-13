@@ -1,15 +1,14 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth.assertThat
-import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
+import com.saj.rickandmorty.builders.ShowCharacterDTOBuilder
 import com.saj.rickandmorty.network.mappers.ShowCharacterMapper
 import org.junit.Test
 
 class ShowCharacterDTOMapperTest {
 
     private val mapper =  ShowCharacterMapper()
-    private val showCharacterDTO = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
-        "image_url", listOf("1", "2"))
+    private val showCharacterDTO = ShowCharacterDTOBuilder().build()
     private val showCharacter = mapper.map(showCharacterDTO)
 
     @Test

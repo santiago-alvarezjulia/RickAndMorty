@@ -1,7 +1,7 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth
-import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
+import com.saj.rickandmorty.builders.ShowCharacterBuilder
 import org.junit.Test
 
 class ShowCharacterTest {

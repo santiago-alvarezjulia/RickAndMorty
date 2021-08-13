@@ -1,6 +1,8 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth
+import com.saj.rickandmorty.builders.ShowCharacterBuilder
+import com.saj.rickandmorty.builders.ShowCharacterDTOBuilder
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.network.RickAndMortyWebService
 import com.saj.rickandmorty.network.dtos.InfoDTO
@@ -8,7 +10,6 @@ import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.network.mappers.ListMapper
 import com.saj.rickandmorty.network.responses.GetCharactersResponse
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
-import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -24,8 +25,7 @@ class ShowCharactersRepositoryTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `get show characters returns list of characters`() = runBlockingTest {
-        val showCharacter = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
-            "image_url", listOf("1", "2"))
+        val showCharacter = ShowCharacterDTOBuilder().build()
         val info = InfoDTO("https://rickandmortyapi.com/api/character/?page=2")
         stubWebService(listOf(showCharacter), info)
         stubCharactersListMapper()
