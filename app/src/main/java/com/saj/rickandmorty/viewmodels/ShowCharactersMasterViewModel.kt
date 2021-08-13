@@ -4,17 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saj.rickandmorty.di.IoDispatcher
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepositoryInt
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShowCharactersMasterViewModel @Inject constructor(
-        private val showCharactersRepository: ShowCharactersRepositoryInt
+        private val showCharactersRepository: ShowCharactersRepositoryInt,
+        @IoDispatcher private val dispatcher: CoroutineDispatcher
     ): ViewModel() {
 
     private val _showCharactersLiveData : MutableLiveData<List<ShowCharacter>> by lazy {
@@ -23,13 +25,17 @@ class ShowCharactersMasterViewModel @Inject constructor(
     val showCharacterLiveData : LiveData<List<ShowCharacter>>
         get() = _showCharactersLiveData
 
+    var lastPage: ShowCharactersPage? = null
+
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            _showCharactersLiveData.postValue(loadNewShowCharacters().showCharacters)
-        }
+        loadNewShowCharactersPage()
     }
 
-    suspend fun loadNewShowCharacters(): ShowCharactersPage {
-        return showCharactersRepository.fetchNewShowCharactersPage()
+    fun loadNewShowCharactersPage() {
+        viewModelScope.launch(dispatcher) {
+            val newPage = showCharactersRepository.fetchNewShowCharactersPage(lastPage)
+            lastPage = newPage
+            _showCharactersLiveData.postValue(newPage.showCharacters)
+        }
     }
 }

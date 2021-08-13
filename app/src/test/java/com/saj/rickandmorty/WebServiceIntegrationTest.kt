@@ -45,7 +45,7 @@ class WebServiceIntegrationTest {
         mockWebServer.enqueue(getMockResponse(readJsonResponseAsString("1-character-200.json"),
             200))
 
-        val actual = webService.getShowCharacters().showCharacters
+        val actual = webService.getShowCharacters(null).showCharacters
         val expected = listOf(
             ShowCharacterDTO(
                 id = 1,
@@ -64,7 +64,7 @@ class WebServiceIntegrationTest {
         mockWebServer.enqueue(getMockResponse(readJsonResponseAsString("1-character-200.json"),
             200))
 
-        val actual = webService.getShowCharacters().info
+        val actual = webService.getShowCharacters(null).info
         val expected = InfoDTO(nextPage = "next_page")
 
         assertThat(expected).isEqualTo(actual)

@@ -25,17 +25,17 @@ class ShowCharactersRepositoryTest {
     fun `get show characters returns list of characters`() = runBlockingTest {
         val showCharacter = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
             "image_url", listOf("1", "2"))
-        val info = InfoDTO("next_page")
+        val info = InfoDTO("https://rickandmortyapi.com/api/character/?page=2")
         stubWebService(listOf(showCharacter), info)
         every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez",
             "Dead", "image_url", 2))
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage()
+        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
         Truth.assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
     }
 
     private fun stubWebService(showCharacters: List<ShowCharacterDTO>, info: InfoDTO) {
         val response = GetCharactersResponse(showCharacters, info)
-        coEvery { rickAndMortyWebService.getShowCharacters()} returns response
+        coEvery { rickAndMortyWebService.getShowCharacters(any())} returns response
     }
 }
