@@ -2,6 +2,7 @@ package com.saj.rickandmorty
 
 import com.google.common.truth.Truth.assertThat
 import com.saj.rickandmorty.network.RickAndMortyWebService
+import com.saj.rickandmorty.network.dtos.InfoDTO
 import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.testUtils.UnitTestsUtils.getMockResponse
 import com.saj.rickandmorty.testUtils.UnitTestsUtils.readJsonResponseAsString
@@ -40,7 +41,7 @@ class WebServiceIntegrationTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should fetch movies correctly given 200 response`() = runBlocking {
+    fun `should fetch show characters correctly given 200 response`() = runBlocking {
         mockWebServer.enqueue(getMockResponse(readJsonResponseAsString("1-character-200.json"),
             200))
 
@@ -54,6 +55,18 @@ class WebServiceIntegrationTest {
                 episodes = listOf("1", "2")
             )
         )
+        assertThat(expected).isEqualTo(actual)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `should fetch info correctly given 200 response`() = runBlocking {
+        mockWebServer.enqueue(getMockResponse(readJsonResponseAsString("1-character-200.json"),
+            200))
+
+        val actual = webService.getShowCharacters().info
+        val expected = InfoDTO(nextPage = "next_page")
+
         assertThat(expected).isEqualTo(actual)
     }
 }

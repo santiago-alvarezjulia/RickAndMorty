@@ -3,6 +3,7 @@ package com.saj.rickandmorty
 import com.google.common.truth.Truth
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.network.RickAndMortyWebService
+import com.saj.rickandmorty.network.dtos.InfoDTO
 import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.network.mappers.ListMapper
 import com.saj.rickandmorty.network.responses.GetCharactersResponse
@@ -24,7 +25,8 @@ class ShowCharactersRepositoryTest {
     fun `get show characters returns list of characters`() = runBlockingTest {
         val showCharacter = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
             "image_url", listOf("1", "2"))
-        stubWebService(listOf(showCharacter))
+        val info = InfoDTO("next_page")
+        stubWebService(listOf(showCharacter), info)
         every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez",
             "Dead", "image_url", 2))
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
@@ -32,8 +34,8 @@ class ShowCharactersRepositoryTest {
         Truth.assertThat(characters.isEmpty()).isFalse()
     }
 
-    private fun stubWebService(showCharacters: List<ShowCharacterDTO>) {
-        val response = GetCharactersResponse(showCharacters)
+    private fun stubWebService(showCharacters: List<ShowCharacterDTO>, info: InfoDTO) {
+        val response = GetCharactersResponse(showCharacters, info)
         coEvery { rickAndMortyWebService.getShowCharacters()} returns response
     }
 }
