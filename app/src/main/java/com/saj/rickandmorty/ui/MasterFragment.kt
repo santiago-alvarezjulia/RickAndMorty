@@ -17,6 +17,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MasterFragment : Fragment() {
 
+    companion object {
+        private const val LOAD_NEW_PAGE_THRESHOLD = 8
+    }
+
     private val showCharactersMasterViewModel: ShowCharactersMasterViewModel by viewModels()
 
     @Inject
@@ -24,6 +28,8 @@ class MasterFragment : Fragment() {
 
     private var _binding: FragmentMasterBinding? = null
     private val binding get() = _binding!!
+
+    private var loadingNewPage = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -38,14 +44,26 @@ class MasterFragment : Fragment() {
 
         showCharactersMasterViewModel.showCharacterLiveData.observe(viewLifecycleOwner, {
             setCharactersAdapterData(it)
+            loadingNewPage = false
         })
     }
 
     private fun setUpShowCharactersAdapter() {
-        binding.charactersList.layoutManager = LinearLayoutManager(activity)
+        val layoutManager = LinearLayoutManager(activity)
+        binding.charactersList.layoutManager = layoutManager
         showCharactersAdapter.setHasStableIds(true)
         binding.charactersList.adapter = showCharactersAdapter
         binding.charactersList.setHasFixedSize(true)
+
+        binding.charactersList.setOnScrollChangeListener { _, _, _, _, _ ->
+            val itemCount = showCharactersAdapter.itemCount
+            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+            if (lastVisibleItemPosition == itemCount - LOAD_NEW_PAGE_THRESHOLD && !loadingNewPage) {
+                loadingNewPage = true
+                showCharactersMasterViewModel.loadNewShowCharactersPage()
+            }
+        }
     }
 
     private fun setCharactersAdapterData(showCharacters: List<ShowCharacter>) {
