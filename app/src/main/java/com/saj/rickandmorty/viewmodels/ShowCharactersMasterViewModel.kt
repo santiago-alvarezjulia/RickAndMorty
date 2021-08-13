@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saj.rickandmorty.models.ShowCharacter
+import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepositoryInt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,11 +25,11 @@ class ShowCharactersMasterViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _showCharactersLiveData.postValue(getShowCharacters())
+            _showCharactersLiveData.postValue(loadNewShowCharacters().showCharacters)
         }
     }
 
-    suspend fun getShowCharacters(): List<ShowCharacter> {
-        return showCharactersRepository.fetchShowCharacters()
+    suspend fun loadNewShowCharacters(): ShowCharactersPage {
+        return showCharactersRepository.fetchNewShowCharactersPage()
     }
 }

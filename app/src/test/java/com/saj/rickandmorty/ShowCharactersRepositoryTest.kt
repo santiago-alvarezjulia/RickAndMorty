@@ -30,8 +30,8 @@ class ShowCharactersRepositoryTest {
         every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez",
             "Dead", "image_url", 2))
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val characters = charactersListRepository.fetchShowCharacters()
-        Truth.assertThat(characters.isEmpty()).isFalse()
+        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage()
+        Truth.assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
     }
 
     private fun stubWebService(showCharacters: List<ShowCharacterDTO>, info: InfoDTO) {

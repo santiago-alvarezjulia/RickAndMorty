@@ -2,6 +2,7 @@ package com.saj.rickandmorty
 
 import com.google.common.truth.Truth.assertThat
 import com.saj.rickandmorty.models.ShowCharacter
+import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
 import com.saj.rickandmorty.viewmodels.ShowCharactersMasterViewModel
 import io.mockk.coEvery
@@ -19,8 +20,8 @@ class ShowCharactersViewModelTest {
     fun `get show characters returns empty list when no characters`() = runBlockingTest {
         stubFetchShowCharacters(emptyList())
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo)
-        val characters = charactersListViewModel.getShowCharacters()
-        assertThat(characters.isEmpty()).isTrue()
+        val newCharactersPage = charactersListViewModel.loadNewShowCharacters()
+        assertThat(newCharactersPage.showCharacters.isEmpty()).isTrue()
     }
 
     @ExperimentalCoroutinesApi
@@ -30,11 +31,12 @@ class ShowCharactersViewModelTest {
             "image_url", 2)
         stubFetchShowCharacters(listOf(showCharacter))
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo)
-        val characters = charactersListViewModel.getShowCharacters()
-        assertThat(characters.isEmpty()).isFalse()
+        val newCharactersPage = charactersListViewModel.loadNewShowCharacters()
+        assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
     }
 
     private fun stubFetchShowCharacters(characters: List<ShowCharacter>) {
-        coEvery { showCharactersRepo.fetchShowCharacters()} returns characters
+        val newPage = ShowCharactersPage(characters, hashMapOf())
+        coEvery { showCharactersRepo.fetchNewShowCharactersPage()} returns newPage
     }
 }
