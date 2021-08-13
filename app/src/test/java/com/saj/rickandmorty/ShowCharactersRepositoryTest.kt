@@ -8,6 +8,7 @@ import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.network.mappers.ListMapper
 import com.saj.rickandmorty.network.responses.GetCharactersResponse
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
+import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -27,11 +28,15 @@ class ShowCharactersRepositoryTest {
             "image_url", listOf("1", "2"))
         val info = InfoDTO("https://rickandmortyapi.com/api/character/?page=2")
         stubWebService(listOf(showCharacter), info)
-        every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez",
-            "Dead", "image_url", 2))
+        stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
         val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
         Truth.assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
+    }
+
+    private fun stubCharactersListMapper() {
+        val showCharacter = ShowCharacterBuilder().build()
+        every { listMapper.map(any()) } returns listOf(showCharacter)
     }
 
     private fun stubWebService(showCharacters: List<ShowCharacterDTO>, info: InfoDTO) {

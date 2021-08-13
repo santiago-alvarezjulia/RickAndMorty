@@ -1,39 +1,39 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth
-import com.saj.rickandmorty.models.ShowCharacter
+import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
 import org.junit.Test
 
 class ShowCharacterTest {
 
     @Test
     fun `show character with diff id are not the same`() {
-        val showCharacter = ShowCharacter(1, "Rick", "Dead", "image_url", 2)
-        val showCharacterDiffId = ShowCharacter(2, "Rick", "Dead", "image_url", 2)
+        val showCharacter = ShowCharacterBuilder().setId(1).build()
+        val showCharacterDiffId = ShowCharacterBuilder().setId(2).build()
         Truth.assertThat(showCharacter.isTheSame(showCharacterDiffId)).isFalse()
     }
 
     @Test
     fun `show character with same id are the same`() {
         val id = 1
-        val showCharacter = ShowCharacter(id, "Rick", "Dead", "image_url", 2)
-        val showCharacterSameId = ShowCharacter(id, "Rick", "Dead", "image_url", 2)
+        val showCharacter = ShowCharacterBuilder().setId(id).build()
+        val showCharacterSameId = ShowCharacterBuilder().setId(id).build()
         Truth.assertThat(showCharacter.isTheSame(showCharacterSameId)).isTrue()
     }
 
     @Test
     fun `same character with diff name have diff content`() {
         val id = 1
-        val showCharacter = ShowCharacter(id, "Rick", "Dead", "image_url", 2)
-        val showCharacterDiffName = ShowCharacter(id, "Rick2", "Dead", "image_url", 2)
+        val showCharacter = ShowCharacterBuilder().setId(id).setName("Rick").build()
+        val showCharacterDiffName = ShowCharacterBuilder().setId(id).setName("Rick2").build()
         Truth.assertThat(showCharacter.isContentTheSame(showCharacterDiffName)).isFalse()
     }
 
     @Test
     fun `same character with diff imageUrl have diff content`() {
         val id = 1
-        val showCharacter = ShowCharacter(id, "Rick", "Dead", "image_url", 2)
-        val showCharacterDiffImageUrl = ShowCharacter(id, "Rick", "Dead", "image_url2", 2)
+        val showCharacter = ShowCharacterBuilder().setId(id).setImageUrl("image_url").build()
+        val showCharacterDiffImageUrl = ShowCharacterBuilder().setId(id).setImageUrl("image_url2").build()
         Truth.assertThat(showCharacter.isContentTheSame(showCharacterDiffImageUrl)).isFalse()
     }
 

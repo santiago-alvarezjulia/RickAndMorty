@@ -6,6 +6,7 @@ import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
 import com.saj.rickandmorty.testUtils.MainCoroutineRule
+import com.saj.rickandmorty.testUtils.ShowCharacterBuilder
 import com.saj.rickandmorty.testUtils.runBlockingTest
 import com.saj.rickandmorty.viewmodels.ShowCharactersMasterViewModel
 import io.mockk.coEvery
@@ -38,8 +39,7 @@ class ShowCharactersViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `get show characters returns list of characters`() = coroutineRule.runBlockingTest {
-        val showCharacter = ShowCharacter(1, "Rick Sanchez", "Dead",
-            "image_url", 2)
+        val showCharacter = ShowCharacterBuilder().build()
         stubFetchShowCharacters(listOf(showCharacter))
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo,
             coroutineRule.testDispatcher)
