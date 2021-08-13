@@ -48,7 +48,7 @@ class ShowCharactersViewModelTest {
     }
 
     private fun stubFetchShowCharacters(characters: List<ShowCharacter>) {
-        val newPage = ShowCharactersPage(characters, hashMapOf())
+        val newPage = ShowCharactersPage(characters, "1")
         coEvery { showCharactersRepo.fetchNewShowCharactersPage(any())} returns newPage
     }
 }

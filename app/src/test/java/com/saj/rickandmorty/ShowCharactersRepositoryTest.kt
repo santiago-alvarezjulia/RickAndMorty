@@ -1,6 +1,7 @@
 package com.saj.rickandmorty
 
 import com.google.common.truth.Truth
+import com.saj.rickandmorty.builders.InfoDTOBuilder
 import com.saj.rickandmorty.builders.ShowCharacterBuilder
 import com.saj.rickandmorty.builders.ShowCharacterDTOBuilder
 import com.saj.rickandmorty.models.ShowCharacter
@@ -26,12 +27,53 @@ class ShowCharactersRepositoryTest {
     @Test
     fun `get show characters returns list of characters`() = runBlockingTest {
         val showCharacter = ShowCharacterDTOBuilder().build()
-        val info = InfoDTO("https://rickandmortyapi.com/api/character/?page=2")
+        val info = InfoDTOBuilder().build()
         stubWebService(listOf(showCharacter), info)
         stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
         val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
         Truth.assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `when nextPageUrl null, getNextPage returns null`() = runBlockingTest {
+        val showCharacter = ShowCharacterDTOBuilder().build()
+        val emptyInfo = InfoDTOBuilder().setNextPage(null).build()
+        stubWebService(listOf(showCharacter), emptyInfo)
+        stubCharactersListMapper()
+        val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
+        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        Truth.assertThat(newCharactersPage.nextPage).isNull()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `when nextPageUrl have value, getNextPage returns that value`() = runBlockingTest {
+        val showCharacter = ShowCharacterDTOBuilder().build()
+        val nextPage = "20"
+        val info = InfoDTOBuilder()
+            .setNextPage("https://rickandmortyapi.com/api/character/?page=$nextPage")
+            .build()
+        stubWebService(listOf(showCharacter), info)
+        stubCharactersListMapper()
+        val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
+        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        Truth.assertThat(newCharactersPage.nextPage).isEqualTo(nextPage)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `when nextPageUrl is malformed, getNextPage returns null`() = runBlockingTest {
+        val showCharacter = ShowCharacterDTOBuilder().build()
+        val info = InfoDTOBuilder()
+            .setNextPage("malformed_url")
+            .build()
+        stubWebService(listOf(showCharacter), info)
+        stubCharactersListMapper()
+        val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
+        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        Truth.assertThat(newCharactersPage.nextPage).isNull()
     }
 
     private fun stubCharactersListMapper() {

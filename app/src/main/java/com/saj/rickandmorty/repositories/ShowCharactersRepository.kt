@@ -5,6 +5,7 @@ import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.network.RickAndMortyWebService
 import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.network.mappers.ListMapper
+import java.net.MalformedURLException
 import java.net.URL
 import javax.inject.Inject
 
@@ -13,26 +14,26 @@ open class ShowCharactersRepository @Inject constructor(
     private val listMapper: ListMapper<ShowCharacterDTO, ShowCharacter>
 ) : ShowCharactersRepositoryInt {
     override suspend fun fetchNewShowCharactersPage(lastPage: ShowCharactersPage?): ShowCharactersPage {
-        val nextPage = if (lastPage == null) {
-            null
-        } else {
-            lastPage.nextPageQueryParams!!["page"]
-        }
+        val nextPage = lastPage?.nextPage
         val response = rickAndMortyWebService.getShowCharacters(nextPage)
         return ShowCharactersPage(
             listMapper.map(response.showCharacters),
-            getNextPageQueryParams(response.info.nextPage)
+            getNextPage(response.info.nextPage)
         )
     }
 
-    private fun getNextPageQueryParams(nextPageUrl: String): HashMap<String, String> {
-        val url = URL(nextPageUrl)
-        val queryParams = hashMapOf<String, String>()
-        val querySplitted = url.query.split('&')
-        for (queryParam in querySplitted) {
-            val keyValue = queryParam.split('=')
-            queryParams[keyValue[0]] = keyValue[1]
+    private fun getNextPage(nextPageUrl: String?): String? {
+        nextPageUrl?.let {
+            return try {
+                val url = URL(nextPageUrl)
+                val querySplit = url.query.split('&')
+                val keyValue = querySplit[0].split('=')
+                keyValue[1]
+            } catch (e: MalformedURLException) {
+                null
+            }
+        } ?: run {
+            return null
         }
-        return queryParams
     }
 }
