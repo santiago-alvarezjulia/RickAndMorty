@@ -1,0 +1,11 @@
+{
+	"results": [
+		{
+			"id": 1,
+			"name": "Rick Sanchez",
+			"status": "Dead",
+			"image": "image_url",
+			"episode": ["1", "2"]
+		}		
+	]
+}

@@ -34,9 +34,11 @@ class MasterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        println("VIEW CREATED ADOAONDOAF")
         setUpShowCharactersAdapter()
 
         showCharactersMasterViewModel.showCharacterLiveData.observe(viewLifecycleOwner, {
+            println("SET CHARACTERS DATA")
             setCharactersAdapterData(it)
         })
     }

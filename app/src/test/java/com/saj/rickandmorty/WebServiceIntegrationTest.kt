@@ -20,6 +20,7 @@ class WebServiceIntegrationTest {
     private val mockWebServer = MockWebServer()
 
     private val interceptor = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(interceptor)
@@ -32,7 +33,6 @@ class WebServiceIntegrationTest {
         .build()
         .create(RickAndMortyWebService::class.java)
 
-    @ExperimentalCoroutinesApi
     @After
     fun tearDown() {
         mockWebServer.shutdown()
