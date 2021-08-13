@@ -1,0 +1,10 @@
+{
+	"results": [
+		{
+			"id": 1,
+			"name": "Rick Sanchez",
+			"status": "Dead",
+			"episode": ["1", "2"]
+		}		
+	]
+}
