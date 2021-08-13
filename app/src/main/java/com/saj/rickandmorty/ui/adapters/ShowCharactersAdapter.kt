@@ -3,11 +3,10 @@ package com.saj.rickandmorty.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.saj.rickandmorty.R
+import com.saj.rickandmorty.databinding.ShowCharacterItemBinding
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.ui.imagemanager.ImageLoader
 import javax.inject.Inject
@@ -28,6 +27,10 @@ class ShowCharactersAdapter @Inject constructor(
 
     override fun getItemCount() = showCharacters.size
 
+    override fun getItemId(position: Int): Long {
+        return showCharacters[position].id.toLong()
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,12 +42,12 @@ class ShowCharactersAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: ShowCharactersAdapter.ViewHolder, position: Int) {
         val showCharacter = showCharacters[position]
-        holder.nameTv.text = showCharacter.name
-        imageLoader.loadImage(holder.itemView.context, holder.avatarIv, showCharacter.imageUrl)
+        holder.binding.characterName.text = showCharacter.name
+        imageLoader.loadImage(holder.itemView.context, holder.binding.characterAvatar,
+            showCharacter.imageUrl)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val avatarIv: ImageView = itemView.findViewById(R.id.character_avatar)
-        val nameTv: TextView = itemView.findViewById(R.id.character_name)
+        val binding = ShowCharacterItemBinding.bind(itemView)
     }
 }

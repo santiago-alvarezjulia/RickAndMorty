@@ -43,7 +43,9 @@ class MasterFragment : Fragment() {
 
     private fun setUpShowCharactersAdapter() {
         binding.charactersList.layoutManager = LinearLayoutManager(activity)
+        showCharactersAdapter.setHasStableIds(true)
         binding.charactersList.adapter = showCharactersAdapter
+        binding.charactersList.setHasFixedSize(true)
     }
 
     private fun setCharactersAdapterData(showCharacters: List<ShowCharacter>) {
