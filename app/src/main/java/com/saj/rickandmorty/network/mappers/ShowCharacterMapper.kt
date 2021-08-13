@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class ShowCharacterMapper @Inject constructor() : Mapper<ShowCharacterDTO, ShowCharacter> {
     override fun map(input: ShowCharacterDTO): ShowCharacter {
-        return ShowCharacter(input.id, input.name, input.status, input.episodes.size)
+        return ShowCharacter(input.id, input.name, input.status, input.imageUrl,
+            input.episodes.size)
     }
 }

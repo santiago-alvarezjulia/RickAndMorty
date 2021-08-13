@@ -26,7 +26,8 @@ class ShowCharactersViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `get show characters returns list of characters`() = runBlockingTest {
-        val showCharacter = ShowCharacter(1, "Rick Sanchez", "Dead", 2)
+        val showCharacter = ShowCharacter(1, "Rick Sanchez", "Dead",
+            "image_url", 2)
         stubFetchShowCharacters(listOf(showCharacter))
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo)
         val characters = charactersListViewModel.getShowCharacters()

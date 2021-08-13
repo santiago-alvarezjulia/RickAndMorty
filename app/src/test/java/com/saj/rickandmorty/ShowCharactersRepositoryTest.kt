@@ -22,9 +22,11 @@ class ShowCharactersRepositoryTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `get show characters returns list of characters`() = runBlockingTest {
-        val showCharacter = ShowCharacterDTO(1, "Rick Sanchez", "Dead", listOf("1", "2"))
+        val showCharacter = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
+            "image_url", listOf("1", "2"))
         stubWebService(listOf(showCharacter))
-        every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez", "Dead", 2))
+        every { listMapper.map(any()) } returns listOf(ShowCharacter(1, "Rick Sanchez",
+            "Dead", "image_url", 2))
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
         val characters = charactersListRepository.fetchShowCharacters()
         Truth.assertThat(characters.isEmpty()).isFalse()

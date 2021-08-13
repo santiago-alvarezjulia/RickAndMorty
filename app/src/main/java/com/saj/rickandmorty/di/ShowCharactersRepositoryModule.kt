@@ -7,10 +7,10 @@ import com.saj.rickandmorty.network.mappers.ShowCharacterMapper
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 abstract class ShowCharactersRepositoryModule {
 
     @Binds

@@ -50,6 +50,7 @@ class WebServiceIntegrationTest {
                 id = 1,
                 name = "Rick Sanchez",
                 status = "Dead",
+                imageUrl = "image_url",
                 episodes = listOf("1", "2")
             )
         )

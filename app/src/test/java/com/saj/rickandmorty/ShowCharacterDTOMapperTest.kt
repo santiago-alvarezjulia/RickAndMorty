@@ -8,7 +8,8 @@ import org.junit.Test
 class ShowCharacterDTOMapperTest {
 
     private val mapper =  ShowCharacterMapper()
-    private val showCharacterDTO = ShowCharacterDTO(1, "Rick Sanchez", "Dead", listOf("1", "2"))
+    private val showCharacterDTO = ShowCharacterDTO(1, "Rick Sanchez", "Dead",
+        "image_url", listOf("1", "2"))
     private val showCharacter = mapper.map(showCharacterDTO)
 
     @Test
@@ -28,6 +29,11 @@ class ShowCharacterDTOMapperTest {
 
     @Test
     fun `show character mapping episodes_count`() {
-        assertThat(showCharacter.episodes_count).isEqualTo(showCharacterDTO.episodes.size)
+        assertThat(showCharacter.episodesCount).isEqualTo(showCharacterDTO.episodes.size)
+    }
+
+    @Test
+    fun `show character mapping imageUrl`() {
+        assertThat(showCharacter.imageUrl).isEqualTo(showCharacterDTO.imageUrl)
     }
 }
