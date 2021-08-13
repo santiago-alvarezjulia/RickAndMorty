@@ -29,10 +29,9 @@ class ShowCharactersViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `get show characters returns empty list when no characters`() = coroutineRule.runBlockingTest {
-        stubFetchShowCharacters(emptyList())
+        stubFetchShowCharacters(emptyList(), "1")
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo,
             coroutineRule.testDispatcher)
-        charactersListViewModel.loadNewShowCharactersPage()
         assertThat(charactersListViewModel.showCharacterLiveData.value?.isEmpty()).isTrue()
     }
 
@@ -40,15 +39,31 @@ class ShowCharactersViewModelTest {
     @Test
     fun `get show characters returns list of characters`() = coroutineRule.runBlockingTest {
         val showCharacter = ShowCharacterBuilder().build()
-        stubFetchShowCharacters(listOf(showCharacter))
+        stubFetchShowCharacters(listOf(showCharacter), "1")
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo,
             coroutineRule.testDispatcher)
-        charactersListViewModel.loadNewShowCharactersPage()
         assertThat(charactersListViewModel.showCharacterLiveData.value?.isEmpty()).isFalse()
     }
 
-    private fun stubFetchShowCharacters(characters: List<ShowCharacter>) {
-        val newPage = ShowCharactersPage(characters, "1")
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `consecutive loadNewShowCharacter should accumulate characters in livedata`() = coroutineRule.runBlockingTest {
+
+
+        val showCharacter = ShowCharacterBuilder().build()
+        stubFetchShowCharacters(listOf(showCharacter), "1")
+        val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo,
+            coroutineRule.testDispatcher)
+
+        val showCharacter2 = ShowCharacterBuilder().setId(120).build()
+        stubFetchShowCharacters(listOf(showCharacter2), "2")
+        charactersListViewModel.loadNewShowCharactersPage()
+
+        assertThat(charactersListViewModel.showCharacterLiveData.value?.size).isEqualTo(2)
+    }
+
+    private fun stubFetchShowCharacters(characters: List<ShowCharacter>, nextPage: String) {
+        val newPage = ShowCharactersPage(characters, nextPage)
         coEvery { showCharactersRepo.fetchNewShowCharactersPage(any())} returns newPage
     }
 }

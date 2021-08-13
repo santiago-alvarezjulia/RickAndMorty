@@ -25,7 +25,7 @@ class ShowCharactersMasterViewModel @Inject constructor(
     val showCharacterLiveData : LiveData<List<ShowCharacter>>
         get() = _showCharactersLiveData
 
-    var lastPage: ShowCharactersPage? = null
+    private var lastPage: ShowCharactersPage? = null
 
     init {
         loadNewShowCharactersPage()
@@ -35,7 +35,12 @@ class ShowCharactersMasterViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             val newPage = showCharactersRepository.fetchNewShowCharactersPage(lastPage)
             lastPage = newPage
-            _showCharactersLiveData.postValue(newPage.showCharacters)
+            val newCharactersCompleteList = mutableListOf<ShowCharacter>()
+            _showCharactersLiveData.value?.let {
+                newCharactersCompleteList.addAll(it)
+            }
+            newCharactersCompleteList.addAll(newPage.showCharacters)
+            _showCharactersLiveData.postValue(newCharactersCompleteList)
         }
     }
 }
