@@ -8,5 +8,19 @@
     <fragment
         android:id="@+id/masterFragment"
         android:name="com.saj.rickandmorty.ui.MasterFragment"
-        tools:layout="@layout/fragment_master" />
+        tools:layout="@layout/fragment_master">
+        <action
+            android:id="@+id/actionToDetailFragment"
+            app:destination="@id/detailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.saj.rickandmorty.ui.DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="showCharacter"
+            app:argType="com.saj.rickandmorty.models.ShowCharacter"
+            app:nullable="false"/>
+    </fragment>
 </navigation>

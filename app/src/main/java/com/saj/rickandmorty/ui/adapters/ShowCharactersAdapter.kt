@@ -9,11 +9,10 @@ import com.saj.rickandmorty.R
 import com.saj.rickandmorty.databinding.ShowCharacterItemBinding
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.ui.imagemanager.ImageLoader
-import javax.inject.Inject
 
-class ShowCharactersAdapter @Inject constructor(
-    private val imageLoader: ImageLoader
-) : RecyclerView.Adapter<ShowCharactersAdapter.ViewHolder>() {
+class ShowCharactersAdapter(private val imageLoader: ImageLoader,
+                            private val onClick: (ShowCharacter) -> Unit)
+    : RecyclerView.Adapter<ShowCharactersAdapter.ViewHolder>() {
 
     private val showCharacters = mutableListOf<ShowCharacter>()
 
@@ -49,5 +48,10 @@ class ShowCharactersAdapter @Inject constructor(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ShowCharacterItemBinding.bind(itemView)
+        init {
+            itemView.setOnClickListener {
+                onClick(showCharacters[adapterPosition])
+            }
+        }
     }
 }
