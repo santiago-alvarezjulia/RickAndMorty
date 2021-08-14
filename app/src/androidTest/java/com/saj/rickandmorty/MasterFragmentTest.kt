@@ -27,7 +27,7 @@ import javax.inject.Inject
 @LargeTest
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class ListCharactersTest {
+class MasterFragmentTest {
 
     companion object {
         private const val EXP_ITEM_COUNT = 1
