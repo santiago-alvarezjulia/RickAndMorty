@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/masterFragment"
         android:name="com.saj.rickandmorty.ui.MasterFragment"
+        android:label="@string/master_fragment_title"
         tools:layout="@layout/fragment_master">
         <action
             android:id="@+id/actionToDetailFragment"
@@ -21,6 +22,7 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.saj.rickandmorty.ui.DetailFragment"
+        android:label="@string/detail_fragment_title"
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="showCharacter"
