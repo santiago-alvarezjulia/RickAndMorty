@@ -10,6 +10,7 @@ import com.saj.rickandmorty.network.dtos.InfoDTO
 import com.saj.rickandmorty.network.dtos.ShowCharacterDTO
 import com.saj.rickandmorty.network.mappers.ListMapper
 import com.saj.rickandmorty.network.responses.GetCharactersResponse
+import com.saj.rickandmorty.network.responses.NetworkResponse
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
 import io.mockk.coEvery
 import io.mockk.every
@@ -31,7 +32,8 @@ class ShowCharactersRepositoryTest {
         stubWebService(listOf(showCharacter), info)
         stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        val response = charactersListRepository.fetchNewShowCharactersPage(null)
+        val newCharactersPage = (response as NetworkResponse.Success).body
         Truth.assertThat(newCharactersPage.showCharacters.isEmpty()).isFalse()
     }
 
@@ -43,7 +45,8 @@ class ShowCharactersRepositoryTest {
         stubWebService(listOf(showCharacter), emptyInfo)
         stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        val response = charactersListRepository.fetchNewShowCharactersPage(null)
+        val newCharactersPage = (response as NetworkResponse.Success).body
         Truth.assertThat(newCharactersPage.nextPage).isNull()
     }
 
@@ -58,7 +61,8 @@ class ShowCharactersRepositoryTest {
         stubWebService(listOf(showCharacter), info)
         stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        val response = charactersListRepository.fetchNewShowCharactersPage(null)
+        val newCharactersPage = (response as NetworkResponse.Success).body
         Truth.assertThat(newCharactersPage.nextPage).isEqualTo(nextPage)
     }
 
@@ -72,8 +76,19 @@ class ShowCharactersRepositoryTest {
         stubWebService(listOf(showCharacter), info)
         stubCharactersListMapper()
         val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
-        val newCharactersPage = charactersListRepository.fetchNewShowCharactersPage(null)
+        val response = charactersListRepository.fetchNewShowCharactersPage(null)
+        val newCharactersPage = (response as NetworkResponse.Success).body
         Truth.assertThat(newCharactersPage.nextPage).isNull()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `when network response is error, return it as error`() = runBlockingTest {
+        val errorMessage = "Error msg"
+        stubWebServiceError(errorMessage)
+        val charactersListRepository = ShowCharactersRepository(rickAndMortyWebService, listMapper)
+        val response = charactersListRepository.fetchNewShowCharactersPage(null)
+        Truth.assertThat((response as NetworkResponse.Error).message).isEqualTo(errorMessage)
     }
 
     private fun stubCharactersListMapper() {
@@ -83,6 +98,10 @@ class ShowCharactersRepositoryTest {
 
     private fun stubWebService(showCharacters: List<ShowCharacterDTO>, info: InfoDTO) {
         val response = GetCharactersResponse(showCharacters, info)
-        coEvery { rickAndMortyWebService.getShowCharacters(any())} returns response
+        coEvery { rickAndMortyWebService.getShowCharacters(any())} returns NetworkResponse.Success(response)
+    }
+
+    private fun stubWebServiceError(errorMessage: String) {
+        coEvery { rickAndMortyWebService.getShowCharacters(any())} returns NetworkResponse.Error(errorMessage)
     }
 }

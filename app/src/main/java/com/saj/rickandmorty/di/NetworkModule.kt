@@ -2,6 +2,7 @@ package com.saj.rickandmorty.di
 
 import com.saj.rickandmorty.BuildConfig
 import com.saj.rickandmorty.network.RickAndMortyWebService
+import com.saj.rickandmorty.network.callAdapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,7 @@ object NetworkModule{
     @Provides
     fun provideRickAndMortyWebService(okHttpClient: OkHttpClient): RickAndMortyWebService = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .baseUrl("https://rickandmortyapi.com/api/")
         .client(okHttpClient)
         .build()
