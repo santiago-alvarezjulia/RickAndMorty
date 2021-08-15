@@ -3,6 +3,7 @@ package com.saj.rickandmorty
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.saj.rickandmorty.builders.ShowCharacterBuilder
+import com.saj.rickandmorty.idlingResources.EspressoCountingIdlingResource
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepository
@@ -10,8 +11,11 @@ import com.saj.rickandmorty.testUtils.MainCoroutineRule
 import com.saj.rickandmorty.testUtils.runBlockingTest
 import com.saj.rickandmorty.viewmodels.ShowCharactersMasterViewModel
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -25,6 +29,13 @@ class ShowCharactersViewModelTest {
 
     @get:Rule
     val coroutineRule = MainCoroutineRule()
+
+    @Before
+    fun mockEspressoCountingIdlingResource() {
+        mockkObject(EspressoCountingIdlingResource)
+        every { EspressoCountingIdlingResource.processStarts() } returns Unit
+        every { EspressoCountingIdlingResource.processEnds() } returns Unit
+    }
 
     @ExperimentalCoroutinesApi
     @Test
@@ -48,8 +59,6 @@ class ShowCharactersViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `consecutive loadNewShowCharacter should accumulate characters in livedata`() = coroutineRule.runBlockingTest {
-
-
         val showCharacter = ShowCharacterBuilder().build()
         stubFetchShowCharacters(listOf(showCharacter), "1")
         val charactersListViewModel = ShowCharactersMasterViewModel(showCharactersRepo,

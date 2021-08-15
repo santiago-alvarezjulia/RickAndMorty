@@ -50,7 +50,7 @@ class ShowCharactersAdapter(private val imageLoader: ImageLoader,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ShowCharacterItemBinding.bind(itemView)
         init {
-            itemView.setOnClickListener {
+            binding.characterItem.setOnClickListener {
                 onClick(showCharacters[adapterPosition])
             }
         }

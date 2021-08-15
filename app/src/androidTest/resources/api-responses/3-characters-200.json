@@ -1,0 +1,31 @@
+{
+	"info": {
+		"next": "next_page"
+	},
+	"results": [
+		{
+			"id": 1,
+			"name": "Rick Sanchez",
+			"status": "Alive",
+			"image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+			"episode": ["1", "2"],
+			"species": "Human"
+		},
+		{
+			"id": 2,
+			"name": "Morty Smith",
+			"status": "Alive",
+			"image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+			"episode": ["1", "2"],
+			"species": "Human"
+		},
+		{
+			"id": 3,
+			"name": "Summer Smith",
+			"status": "Alive",
+			"image": "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
+			"episode": ["1", "2"],
+			"species": "Human"
+		}
+	]
+}

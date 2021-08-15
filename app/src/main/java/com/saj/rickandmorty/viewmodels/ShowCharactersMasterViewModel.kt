@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saj.rickandmorty.di.IoDispatcher
+import com.saj.rickandmorty.idlingResources.EspressoCountingIdlingResource
 import com.saj.rickandmorty.models.ShowCharacter
 import com.saj.rickandmorty.models.ShowCharactersPage
 import com.saj.rickandmorty.repositories.ShowCharactersRepositoryInt
@@ -32,6 +33,7 @@ class ShowCharactersMasterViewModel @Inject constructor(
     }
 
     fun loadNewShowCharactersPage() {
+        EspressoCountingIdlingResource.processStarts()
         viewModelScope.launch(dispatcher) {
             val newPage = showCharactersRepository.fetchNewShowCharactersPage(lastPage)
             lastPage = newPage
@@ -41,6 +43,7 @@ class ShowCharactersMasterViewModel @Inject constructor(
             }
             newCharactersCompleteList.addAll(newPage.showCharacters)
             _showCharactersLiveData.postValue(newCharactersCompleteList)
+            EspressoCountingIdlingResource.processEnds()
         }
     }
 }

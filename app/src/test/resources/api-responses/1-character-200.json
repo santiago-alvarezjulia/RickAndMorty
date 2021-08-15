@@ -6,8 +6,8 @@
 		{
 			"id": 1,
 			"name": "Rick Sanchez",
-			"status": "Dead",
-			"image": "image_url",
+			"status": "Alive",
+			"image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
 			"episode": ["1", "2"],
 			"species": "Human"
 		}		
