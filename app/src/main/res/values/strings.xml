@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">RickAndMorty</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">RickAndMorty</string>better
     <string name="master_fragment_title">Rick and Morty characters</string>
     <string name="detail_fragment_title">Character detail</string>
+    <string name="detail_fragment_name">Name: %s</string>
+    <string name="detail_fragment_status">Status: %s</string>
+    <string name="detail_fragment_episodes">Episodes Appearances: %d</string>
 </resources>
