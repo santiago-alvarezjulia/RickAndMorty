@@ -51,6 +51,7 @@ class WebServiceIntegrationTest {
             .setStatus("Dead")
             .setImageUrl("image_url")
             .setEpisodes(listOf("1", "2"))
+            .setSpecies("Human")
             .build()
 
         val actual = webService.getShowCharacters(null).showCharacters

@@ -37,4 +37,12 @@ class ShowCharacterTest {
         Truth.assertThat(showCharacter.isContentTheSame(showCharacterDiffImageUrl)).isFalse()
     }
 
+    @Test
+    fun `same character with diff species have diff content`() {
+        val id = 1
+        val showCharacter = ShowCharacterBuilder().setId(id).setSpecies("Human").build()
+        val showCharacterDiffSpecies = ShowCharacterBuilder().setId(id).setSpecies("Human2").build()
+        Truth.assertThat(showCharacter.isContentTheSame(showCharacterDiffSpecies)).isFalse()
+    }
+
 }

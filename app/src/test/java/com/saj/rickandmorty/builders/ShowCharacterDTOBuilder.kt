@@ -9,6 +9,7 @@ class ShowCharacterDTOBuilder {
     private var status = "Alive"
     private var imageUrl = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
     private var episodes = listOf("E1, E2")
+    private var species = "Human"
 
     fun setId(newId: Int) : ShowCharacterDTOBuilder {
         this.id = newId
@@ -35,7 +36,12 @@ class ShowCharacterDTOBuilder {
         return this
     }
 
+    fun setSpecies(newSpecie: String) : ShowCharacterDTOBuilder {
+        this.species = newSpecie
+        return this
+    }
+
     fun build() : ShowCharacterDTO {
-        return ShowCharacterDTO(id, name, status, imageUrl, episodes)
+        return ShowCharacterDTO(id, name, status, imageUrl, episodes, species)
     }
 }

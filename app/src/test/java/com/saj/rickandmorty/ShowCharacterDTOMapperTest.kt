@@ -35,4 +35,9 @@ class ShowCharacterDTOMapperTest {
     fun `show character mapping imageUrl`() {
         assertThat(showCharacter.imageUrl).isEqualTo(showCharacterDTO.imageUrl)
     }
+
+    @Test
+    fun `show character mapping species`() {
+        assertThat(showCharacter.species).isEqualTo(showCharacterDTO.species)
+    }
 }

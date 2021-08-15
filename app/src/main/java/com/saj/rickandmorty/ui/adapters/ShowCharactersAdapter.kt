@@ -42,6 +42,7 @@ class ShowCharactersAdapter(private val imageLoader: ImageLoader,
     override fun onBindViewHolder(holder: ShowCharactersAdapter.ViewHolder, position: Int) {
         val showCharacter = showCharacters[position]
         holder.binding.characterName.text = showCharacter.name
+        holder.binding.characterSpecies.text = showCharacter.species
         imageLoader.loadImage(holder.itemView.context, holder.binding.characterAvatar,
             showCharacter.imageUrl)
     }

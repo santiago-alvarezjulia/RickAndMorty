@@ -9,5 +9,6 @@ data class ShowCharacterDTO(
     @Json(name = "name") val name: String,
     @Json(name = "status") val status: String,
     @Json(name = "image") val imageUrl: String,
-    @Json(name = "episode") val episodes: List<String>
+    @Json(name = "episode") val episodes: List<String>,
+    @Json(name = "species") val species: String
 )
