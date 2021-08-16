@@ -15,7 +15,7 @@ class NetworkResponseCall<S: Any>(
 ) : Call<NetworkResponse<S>> {
 
     companion object {
-        const val ERROR_MSG = "Unknown Error"
+        const val ERROR_MSG = "Error loading characters"
     }
 
     override fun enqueue(callback: Callback<NetworkResponse<S>>) {
