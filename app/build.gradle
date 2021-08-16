@@ -68,6 +68,9 @@ dependencies {
     debugImplementation ("androidx.fragment:fragment-testing:1.3.6") {
         exclude group: "androidx.test", module : "core"
     }
+    androidTestImplementation('com.google.truth:truth:1.1.3'){
+        exclude group: 'org.checkerframework', module: 'checker-qual'
+    }
 
     // Dependency Injection
     implementation "com.google.dagger:hilt-android:$hilt_version"
